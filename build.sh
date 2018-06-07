@@ -15,7 +15,7 @@ command -v dotnet >/dev/null 2>&1 || {
 
 SCRIPT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 TOOLS_DIR=${TOOLS_DIR:-"${SCRIPT_ROOT}/tools"}
-CAKE_VERSION=${CAKE_VERSION:-0.26.1}
+CAKE_VERSION=${CAKE_VERSION:-0.28.0}
 CAKE_NETCOREAPP_VERSION=${CAKE_NETCOREAPP_VERSION:-2.0}
 
 mkdir -p "${TOOLS_DIR}"
@@ -32,7 +32,7 @@ SHOW_VERSION=false
 SCRIPT_ARGUMENTS=()
 
 # Parse arguments.
-for i in "$@"; do
+while [ "$#" -gt 0 ]; do
     case $1 in
         -s|--script) SCRIPT="$2"; shift ;;
         -t|--target) TARGET="$2"; shift ;;
