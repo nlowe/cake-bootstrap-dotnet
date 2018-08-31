@@ -15,7 +15,7 @@ command -v dotnet >/dev/null 2>&1 || {
 
 SCRIPT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 TOOLS_DIR=${TOOLS_DIR:-"${SCRIPT_ROOT}/tools"}
-CAKE_VERSION=${CAKE_VERSION:-0.28.0}
+CAKE_VERSION=${CAKE_VERSION:-0.30.0}
 CAKE_NETCOREAPP_VERSION=${CAKE_NETCOREAPP_VERSION:-2.0}
 
 mkdir -p "${TOOLS_DIR}"
@@ -73,5 +73,15 @@ fi
 if $SHOW_VERSION; then
     exec dotnet "$CAKE_DLL" -version
 else
-    exec dotnet "$CAKE_DLL" "${SCRIPT}" "-verbosity=${VERBOSITY}" "-configuration=${CONFIGURATION}" "-target=${TARGET}" "${DRYRUN}" "${SCRIPT_ARGUMENTS[@]-}"
+    cakecmd="dotnet \"${CAKE_DLL}\" \"${SCRIPT}\" \"-verbosity=${VERBOSITY}\" \"-configuration=${CONFIGURATION}\" \"-target=${TARGET}\""
+
+    if [ ! -z "${DRYRUN}" ]; then
+        cakecmd+=" \"${DRYRUN}\""
+    fi
+
+    if [ "${#SCRIPT_ARGUMENTS[@]}" -gt 0 ]; then
+        cakecmd+=" \"${SCRIPT_ARGUMENTS[*]}\""
+    fi
+
+    eval "$(printf '%b\n' "${cakecmd}")"
 fi
