@@ -80,7 +80,9 @@ else
     fi
 
     if [ "${#SCRIPT_ARGUMENTS[@]}" -gt 0 ]; then
-        cakecmd+=" \"${SCRIPT_ARGUMENTS[*]}\""
+        for scriptArg in "${SCRIPT_ARGUMENTS[@]}"; do
+            cakecmd+=" '${scriptArg}'"
+        done
     fi
 
     eval "$(printf '%b\n' "${cakecmd}")"
